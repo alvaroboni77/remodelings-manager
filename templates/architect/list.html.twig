@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{{ parent() }}
+<!-- Content -->
+<div class="content mt-3">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-md-12">                
+                <div class="card">
+                    <div class="card-header">
+                        <strong class="card-title">Listado de arquitectos</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">                
+                <div class="card">
+                    <div class="card-header">
+                        <strong class="card-title">Listado de arquitectos técnicos</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block sectiontitle %}Arquitectos{% endblock %}
