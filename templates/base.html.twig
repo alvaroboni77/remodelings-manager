@@ -28,25 +28,25 @@
                     <a href="{{ path('index') }}"><i class="menu-icon fa fa-dashboard"></i>Dashboard</a>
                 </li>
                 <li class="menu-item-has-children active dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="menu-icon fa fa-building-o"></i>Proyectos de obra</a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="menu-icon fa fa-building-o"></i>Reformas</a>
                     <ul class="sub-menu children dropdown-menu">
-                        <li><i class="fa fa-table"></i><a href="#">Listado</a></li>
-                        <li><i class="fa fa-plus-square-o"></i><a href="#">Nuevo proyecto</a></li>
+                        <li><i class="fa fa-table"></i><a href="{{ path('remodeling_list') }}">Listado</a></li>
+                        <li><i class="fa fa-plus-square-o"></i><a href="{{ path('remodeling_new') }}">Nuevo proyecto</a></li>
                     </ul>
                 </li>
                 <li class="menu-item-has-children active dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="menu-icon fa fa-wrench"></i>Constructores</a>
                     <ul class="sub-menu children dropdown-menu">
-                        <li><i class="fa fa-table"></i><a href="#">Listado</a></li>
-                        <li><i class="fa fa-plus-square-o"></i><a href="#">Añadir constructor</a></li>
+                        <li><i class="fa fa-table"></i><a href="{{ path('builder_list') }}">Listado</a></li>
+                        <li><i class="fa fa-plus-square-o"></i><a href="{{ path('builder_new') }}">Añadir constructor</a></li>
                     </ul>
                 </li>
                 <li class="menu-item-has-children active dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="menu-icon fa fa-map-o"></i>Arquitectos</a>
                     <ul class="sub-menu children dropdown-menu">
-                        <li><i class="fa fa-table"></i><a href="#">Listado</a></li>
-                        <li><i class="fa fa-plus-square-o"></i><a href="#">Añadir arquitecto</a></li>
-                        <li><i class="fa fa-plus-square-o"></i><a href="#">Añadir arquitecto técnico</a></li>
+                        <li><i class="fa fa-table"></i><a href="{{ path('architect_list') }}">Listado</a></li>
+                        <li><i class="fa fa-plus-square-o"></i><a href="{{ path('architect_new') }}">Añadir arquitecto</a></li>
+                        <li><i class="fa fa-plus-square-o"></i><a href="{{ path('technical_architect_new') }}">Añadir arquitecto técnico</a></li>
                     </ul>
                 </li>
             </ul>
