@@ -2,5 +2,12 @@
 {% block body %}
 {{ parent() }}
 <!-- Content -->
-<h1>Dashboard</h1>
+    <h1>Dashboard</h1>
+    <br>
+    <a class="btn btn-primary ml-5" href="{{ path('user_registration') }}">Registrarse</a>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success mt-3">
+            {{ message }}
+        </div>
+    {% endfor %}
 {% endblock %}
