@@ -957,6 +957,14 @@ button {
   -webkit-transition: all 0.25s ease;
   transition: all 0.25s ease; }
 
+#registration_link{
+  color:#007bff;
+}
+
+#registration_link:hover{
+  text-decoration: underline;
+}
+
 a:focus,
 a:hover {
   text-decoration: none;
