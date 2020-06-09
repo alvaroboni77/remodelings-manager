@@ -26,7 +26,7 @@ class UserTest extends TestCase
      */
     public static function setUpBeforeClass()
     {
-        self::$usuario = new User('', '');
+        self::$usuario = new User();
         self::$faker = FakerFactoryAlias::create('es_ES');
     }
 

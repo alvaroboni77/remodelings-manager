@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository") *
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity("email")
  */
 class User implements UserInterface
@@ -27,32 +27,27 @@ class User implements UserInterface
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=254, unique=true)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\Email
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=64)
      */
     private $password;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="array")
      */
     private $roles = [];
 
     /**
      * User constructor.
-     * @param string $email
-     * @param string $password
-     * @param array $roles
      */
-    public function __construct(string $email = '', string $password = '', array $roles = [ 'ROLE_USER' ])
+    public function __construct()
     {
-        $this->email = $email;
-        $this->password = password_hash($password, PASSWORD_ARGON2ID);
-        $this->roles = $roles;
+        $this->roles = $roles = [ 'ROLE_USER' ];
     }
 
     public function getId(): ?int
@@ -96,7 +91,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->name;
+        return (string) $this->email;
     }
 
     public function getPassword()
@@ -106,17 +101,12 @@ class User implements UserInterface
 
     public function setPassword(string $password)
     {
-        $this->password = password_hash($password, PASSWORD_ARGON2ID);
-
-        return $this;
+        $this->password = $password;
     }
 
     public function getRoles()
     {
-        $roles = $this->roles;
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        return $this->roles;
     }
 
     public function setRoles(array $roles): self

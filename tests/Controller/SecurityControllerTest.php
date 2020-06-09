@@ -9,11 +9,11 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class RegistrationControllerTest
+ * Class SecurityControllerTest
  * @package App\Tests\Controller
- * @coversDefaultClass \App\Controller\RegistrationController
+ * @coversDefaultClass \App\Controller\SecurityController
  */
-class RegistrationControllerTest extends WebTestCase
+class SecurityControllerTest extends WebTestCase
 {
     const REGISTER_PATH = '/register';
     /**
