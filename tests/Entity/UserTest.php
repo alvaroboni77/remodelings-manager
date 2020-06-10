@@ -26,7 +26,7 @@ class UserTest extends TestCase
      */
     public static function setUpBeforeClass()
     {
-        self::$usuario = new User('', '');
+        self::$usuario = new User();
         self::$faker = FakerFactoryAlias::create('es_ES');
     }
 
@@ -86,11 +86,9 @@ class UserTest extends TestCase
     {
         $password = self::$faker->password;
         self::$usuario->setPassword($password);
-        self::assertTrue(
-            password_verify(
-                $password,
-                self::$usuario->getPassword()
-            )
+        self::assertEquals(
+            $password,
+            self::$usuario->getPassword()
         );
     }
 
