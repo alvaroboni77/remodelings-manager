@@ -3,7 +3,11 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
+use App\Repository\UserRepository;
 use Exception;
+use Faker\Factory as FakerFactoryAlias;
+use Faker\Generator as FakerGeneratorAlias;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +19,17 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SecurityControllerTest extends WebTestCase
 {
+    /**
+     * @var User
+     */
+    protected static $usuario;
+
+    /** @var FakerGeneratorAlias $faker */
+    private static $faker;
+
+    const LOGIN_PATH = '/login';
     const REGISTER_PATH = '/register';
+
     /**
      * @var KernelBrowser $client
      */
@@ -23,6 +37,8 @@ class SecurityControllerTest extends WebTestCase
 
     public static function setUpBeforeClass()
     {
+        self::$usuario = new User();
+        self::$faker = FakerFactoryAlias::create('es_ES');
         self::$client= static::createClient();
     }
 
@@ -42,16 +58,17 @@ class SecurityControllerTest extends WebTestCase
 
     /**
      * Implements testRegisterUserCreated
-     * @return string
-     * @throws Exception
+     * @return void
      * @covers ::register
      */
     public function testRegisterUserCreated()
     {
-        $randomNum = random_int(1,200);
-        $name = 'NuevoNombre' .$randomNum;
-        $password= 'pass' .$randomNum;
-        $email= 'nuevoEmail' .$randomNum. '@example.com';
+        $name = self::$faker->name;
+        $email = self::$faker->email;
+        $password = self::$faker->password;
+        self::$usuario->setName($name);
+        self::$usuario->setEmail($email);
+        self::$usuario->setPassword($password);
 
         self::$client->request('GET', self::REGISTER_PATH);
         self::$client->submitForm('user[Registrar]', [
@@ -64,28 +81,22 @@ class SecurityControllerTest extends WebTestCase
         $response = self::$client->getResponse();
         self::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
         self::assertTrue($response->isRedirect('/'));
-
-        return $email;
     }
 
     /**
      * Implements testRegisterEmailExists
-     * @param  string $email email returned by testRegisterUserCreated()
      * @return void
-     * @throws Exception
      * @covers ::register
-     * @depends testRegisterUserCreated
      */
-    public function testRegisterEmailExists($email)
+    public function testRegisterEmailExists()
     {
-        $randomNum = random_int(1,200);
-        $name = 'NuevoNombre' .$randomNum;
-        $password= 'pass' .$randomNum;
+        $name = self::$faker->name;
+        $password = self::$faker->password;
 
         self::$client->request('GET', self::REGISTER_PATH);
         self::$client->submitForm('user[Registrar]', [
             'user[name]' => $name,
-            'user[email]' => $email,
+            'user[email]' => self::$usuario->getEmail(),
             'user[password][first]' => $password,
             'user[password][second]' => $password
         ], 'POST');
@@ -93,5 +104,66 @@ class SecurityControllerTest extends WebTestCase
         $response = self::$client->getResponse();
         self::assertEquals(Response::HTTP_OK, $response->getStatusCode());
         self::assertStringContainsString('Este valor ya se ha utilizado.', $response->getContent());
+    }
+
+    /**
+     * Implements testLoginSuccessful
+     * @return void
+     * @covers ::login
+     */
+    public function testLoginSuccessful()
+    {
+        self::$client->request('GET', self::LOGIN_PATH);
+        self::$client->submitForm('Acceder', [
+            'email' => self::$usuario->getEmail(),
+            'password' => self::$usuario->getPassword()
+        ], 'POST');
+
+        $response = self::$client->getResponse();
+        self::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
+        self::assertTrue($response->isRedirect('/'));
+    }
+
+    /**
+     * Implements testLoginEmailNotExists
+     * @return void
+     * @covers ::login
+     */
+    public function testLoginEmailNotExists()
+    {
+        $email = self::$faker->email;
+
+        self::$client->request('GET', self::LOGIN_PATH);
+        self::$client->submitForm('Acceder', [
+            'email' => $email,
+            'password' => self::$usuario->getPassword()
+        ], 'POST');
+
+        $response = self::$client->getResponse();
+        self::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
+        self::assertTrue($response->isRedirect('/login'));
+//        self::$client->assertSelectorTextContains('html', 'Este email no existe');
+//        self::assertStringContainsString('Este email no existe', $response->getContent());
+    }
+
+    /**
+     * Implements testLoginIncorrectPassword
+     * @return void
+     * @covers ::login
+     */
+    public function testLoginIncorrectPassword()
+    {
+        $password = self::$faker->password;
+
+        self::$client->request('GET', self::LOGIN_PATH);
+        self::$client->submitForm('Acceder', [
+            'email' => self::$usuario->getEmail(),
+            'password' => $password
+        ], 'POST');
+
+        $response = self::$client->getResponse();
+        self::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
+        self::assertTrue($response->isRedirect('/login'));
+        //assertSelectorTextContains('html', 'La contraseña es incorrecta');
     }
 }

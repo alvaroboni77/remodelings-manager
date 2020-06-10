@@ -86,11 +86,9 @@ class UserTest extends TestCase
     {
         $password = self::$faker->password;
         self::$usuario->setPassword($password);
-        self::assertTrue(
-            password_verify(
-                $password,
-                self::$usuario->getPassword()
-            )
+        self::assertEquals(
+            $password,
+            self::$usuario->getPassword()
         );
     }
 
