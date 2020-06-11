@@ -11,9 +11,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/builder", name="builder_")
  */
 class BuilderController extends AbstractController
-{/**
- * @Route("/", name="list")
- */
+{
+    /**
+     * @Route("/", name="list")
+     */
     public function builderList()
     {
         return $this->render('builder/list.html.twig');
