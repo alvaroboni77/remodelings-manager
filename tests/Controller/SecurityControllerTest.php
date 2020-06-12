@@ -133,6 +133,7 @@ class SecurityControllerTest extends WebTestCase
     {
         $email = self::$faker->email;
 
+        self::$client->followRedirects(true);
         self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
             'email' => $email,
@@ -140,10 +141,8 @@ class SecurityControllerTest extends WebTestCase
         ], 'POST');
 
         $response = self::$client->getResponse();
-        self::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
-        self::assertTrue($response->isRedirect('/login'));
-//        self::$client->assertSelectorTextContains('html', 'Este email no existe');
-//        self::assertStringContainsString('Este email no existe', $response->getContent());
+        self::assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        self::assertStringContainsString('Este email no existe', $response->getContent());
     }
 
     /**
@@ -155,6 +154,7 @@ class SecurityControllerTest extends WebTestCase
     {
         $password = self::$faker->password;
 
+        self::$client->followRedirects(true);
         self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
             'email' => self::$usuario->getEmail(),
@@ -162,8 +162,7 @@ class SecurityControllerTest extends WebTestCase
         ], 'POST');
 
         $response = self::$client->getResponse();
-        self::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
-        self::assertTrue($response->isRedirect('/login'));
-        //assertSelectorTextContains('html', 'La contraseña es incorrecta');
+        self::assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        self::assertStringContainsString('La contraseña es incorrecta', $response->getContent());
     }
 }
