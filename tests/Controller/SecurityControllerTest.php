@@ -4,8 +4,6 @@
 namespace App\Tests\Controller;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
-use Exception;
 use Faker\Factory as FakerFactoryAlias;
 use Faker\Generator as FakerGeneratorAlias;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -19,6 +17,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SecurityControllerTest extends WebTestCase
 {
+    const LOGIN_PATH = '/login';
+    const REGISTER_PATH = '/register';
+
     /**
      * @var User
      */
@@ -27,15 +28,12 @@ class SecurityControllerTest extends WebTestCase
     /** @var FakerGeneratorAlias $faker */
     private static $faker;
 
-    const LOGIN_PATH = '/login';
-    const REGISTER_PATH = '/register';
-
     /**
      * @var KernelBrowser $client
      */
     private static $client;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass():void
     {
         self::$usuario = new User();
         self::$faker = FakerFactoryAlias::create('es_ES');
@@ -45,7 +43,6 @@ class SecurityControllerTest extends WebTestCase
     /**
      * Implements testRegisterCreateView
      * @return void
-     * @throws Exception
      * @covers ::register
      */
     public function testRegisterCreateView()
