@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -23,7 +24,11 @@ class BuilderController extends AbstractController
      */
     public function list()
     {
-        return $this->render('builder/list.html.twig');
+        $builders = $this->getDoctrine()->getRepository(Builder::class)->findAll();
+
+        return $this->render('builder/list.html.twig', [
+            'builders' => $builders
+        ]);
     }
 
     /**
@@ -59,4 +64,71 @@ class BuilderController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/edit/{id}", name="edit")
+     * @param Request $request
+     * @param int $id
+     * @return RedirectResponse|Response
+     */
+    public function edit(Request $request, int $id)
+    {
+        $builder = $this->getDoctrine()->getRepository(Builder::class)->find($id);
+
+        if(!$builder) {
+            throw $this->createNotFoundException(
+                'No builder found for id '.$id
+            );
+        }
+
+        $form = $this->createForm(BuilderType::class, $builder);
+        $form->add('Update', SubmitType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $builder = $form->getData(); // Get submitted data
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($builder);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'warning',
+                '¡Constructor modificado!'
+            );
+
+            return $this->redirectToRoute('builder_list');
+        }
+
+        return $this->render('builder/edit.html.twig', [
+            'builder' => $builder,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/delete/{id}", name="delete")
+     * @param int $id
+     * @return Response
+     */
+    public function delete(int $id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $builder = $entityManager->getRepository(Builder::class)->find($id);
+
+        if(!$builder) {
+            throw $this->createNotFoundException(
+                'No builder found for id '.$id
+            );
+        }
+
+        $entityManager->remove($builder);
+        $entityManager->flush();
+
+        $this->addFlash(
+            'danger',
+            '¡Constructor eliminado!'
+        );
+
+        return new Response('Builder deleted', 200);
+    }
 }
