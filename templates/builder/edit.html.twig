@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{{ parent() }}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            {{ form(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block sectiontitle %}Constructor #{{ builder.id }}{% endblock %}
