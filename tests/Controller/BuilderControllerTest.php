@@ -4,9 +4,8 @@
 namespace App\Tests\Controller;
 
 
-use App\Entity\User;
-use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
+use App\Entity\Builder;
+use App\Repository\BuilderRepository;
 use Faker\Factory as FakerFactoryAlias;
 use Faker\Generator as FakerGeneratorAlias;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -22,11 +21,6 @@ class BuilderControllerTest extends WebTestCase
 {
     const BUILDER_PATH = '/builder';
     const REGISTER_PATH = '/register';
-
-//    /**
-//     * @var User
-//     */
-//    protected static $user;
 
     /**
      * @var KernelBrowser $client
@@ -45,13 +39,34 @@ class BuilderControllerTest extends WebTestCase
     /**
      * Implements testCreateView
      * @return void
+     * @covers ::list
+     */
+    public function testListView()
+    {
+        self::$client->request('GET', '/login');
+        self::$client->submitForm('Acceder', [
+            'email' => 'testmail@mail.com',
+            'password' => '1234'
+        ], 'POST');
+
+        self::$client->request('GET', self::BUILDER_PATH.'/');
+
+        $response = self::$client->getResponse();
+        self::assertEquals(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    /**
+     * Implements testCreateView
+     * @return void
      * @covers ::create
      */
     public function testCreateView()
     {
-        $userRepository = self::$container->get(UserRepository::class);
-        $testUser = $userRepository->findOneByEmail('testmail@mail.com');
-        self::$client->loginUser($testUser);
+        self::$client->request('GET', '/login');
+        self::$client->submitForm('Acceder', [
+            'email' => 'testmail@mail.com',
+            'password' => '1234'
+        ], 'POST');
 
         self::$client->request('GET', self::BUILDER_PATH.'/new');
 
@@ -61,14 +76,16 @@ class BuilderControllerTest extends WebTestCase
 
     /**
      * Implements testCreateBuilderCreated
-     * @return void
+     * @return Builder $builder
      * @covers ::create
      */
     public function testCreateBuilderCreated()
     {
-        $userRepository = self::$container->get(UserRepository::class);
-        $testUser = $userRepository->findOneByEmail('testmail@mail.com');
-        self::$client->loginUser($testUser);
+        self::$client->request('GET', '/login');
+        self::$client->submitForm('Acceder', [
+            'email' => 'testmail@mail.com',
+            'password' => '1234'
+        ], 'POST');
 
         $name = self::$faker->name;
         $email = self::$faker->email;
@@ -81,8 +98,117 @@ class BuilderControllerTest extends WebTestCase
             'builder[company]' => $company
         ], 'POST');
 
+        self::bootKernel();
+        $builder = self::$container->get(BuilderRepository::class)->findOneByEmail($email);
         $response = self::$client->getResponse();
         self::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
         self::assertTrue($response->isRedirect(self::BUILDER_PATH.'/'));
+
+        return $builder;
+    }
+
+    /**
+     * Implements testEditBuilderUpdated
+     * @param Builder $builder
+     * @return void
+     * @covers ::edit
+     * @depends testCreateBuilderCreated
+     */
+    public function testEditBuilderUpdated(Builder $builder)
+    {
+        self::$client->request('GET', '/login');
+        self::$client->submitForm('Acceder', [
+            'email' => 'testmail@mail.com',
+            'password' => '1234'
+        ], 'POST');
+
+        $id = $builder->getId();
+        $email = self::$faker->email;
+        self::$client->request('GET', self::BUILDER_PATH.'/edit/'.$id);
+        self::$client->submitForm('builder[Update]', [
+            'builder[name]' => $builder->getName(),
+            'builder[email]' => $email,
+            'builder[company]' => $builder->getCompany()
+        ], 'POST');
+
+        self::bootKernel();
+        $editBuilder = self::$container->get(BuilderRepository::class)->findOneById($id);
+        $response = self::$client->getResponse();
+        self::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
+        self::assertTrue($response->isRedirect(self::BUILDER_PATH.'/'));
+        self::assertSame($email, $editBuilder->getEmail());
+    }
+
+    /**
+     * Implements testEditBuilderNotFound
+     * @return void
+     * @covers ::edit
+     */
+    public function testEditBuilderNotFound()
+    {
+        self::$client->request('GET', '/login');
+        self::$client->submitForm('Acceder', [
+            'email' => 'testmail@mail.com',
+            'password' => '1234'
+        ], 'POST');
+
+        self::bootKernel();
+        $lastBuilder = self::$container->get(BuilderRepository::class)->findOneBy([], ['id' => 'desc']);
+        $lastId = $lastBuilder->getId();
+        $id = $lastId + 1;
+        self::$client->request('GET', self::BUILDER_PATH.'/edit/'.$id);
+
+        $response = self::$client->getResponse();
+        self::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+    }
+
+    /**
+     * Implements testDeleteBuilderDeleted
+     * @param Builder $builder
+     * @return void
+     * @covers ::delete
+     * @depends testCreateBuilderCreated
+     */
+    public function testDeleteBuilderDeleted(Builder $builder)
+    {
+        self::$client->request('GET', '/login');
+        self::$client->submitForm('Acceder', [
+            'email' => 'testmail@mail.com',
+            'password' => '1234'
+        ], 'POST');
+
+        $id = $builder->getId();
+        self::$client->followRedirects(true);
+        self::$client->request('POST', self::BUILDER_PATH.'/delete/'.$id);
+
+        self::bootKernel();
+        $builder = self::$container->get(BuilderRepository::class)->findOneById($id);
+        $response = self::$client->getResponse();
+        self::assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        self::assertStringContainsString('Builder deleted', $response->getContent());
+        self::assertNull($builder);
+    }
+
+    /**
+     * Implements testDeleteBuilderNotFound
+     * @return void
+     * @covers ::edit
+     */
+    public function testDeleteBuilderNotFound()
+    {
+        self::$client->request('GET', '/login');
+        self::$client->submitForm('Acceder', [
+            'email' => 'testmail@mail.com',
+            'password' => '1234'
+        ], 'POST');
+
+        self::bootKernel();
+        $lastBuilder = self::$container->get(BuilderRepository::class)->findOneBy([], ['id' => 'desc']);
+        $lastId = $lastBuilder->getId();
+        $id = $lastId + 1;
+        self::$client->request('GET', self::BUILDER_PATH.'/delete/'.$id);
+
+        $response = self::$client->getResponse();
+        self::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 }
