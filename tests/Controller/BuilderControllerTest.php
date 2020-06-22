@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 class BuilderControllerTest extends WebTestCase
 {
     const BUILDER_PATH = '/builder';
-    const REGISTER_PATH = '/register';
+    const LOGIN_PATH = '/login';
 
     /**
      * @var KernelBrowser $client
@@ -43,7 +43,7 @@ class BuilderControllerTest extends WebTestCase
      */
     public function testListView()
     {
-        self::$client->request('GET', '/login');
+        self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
             'email' => 'testmail@mail.com',
             'password' => '1234'
@@ -62,7 +62,7 @@ class BuilderControllerTest extends WebTestCase
      */
     public function testCreateView()
     {
-        self::$client->request('GET', '/login');
+        self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
             'email' => 'testmail@mail.com',
             'password' => '1234'
@@ -81,7 +81,7 @@ class BuilderControllerTest extends WebTestCase
      */
     public function testCreateBuilderCreated()
     {
-        self::$client->request('GET', '/login');
+        self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
             'email' => 'testmail@mail.com',
             'password' => '1234'
@@ -116,7 +116,7 @@ class BuilderControllerTest extends WebTestCase
      */
     public function testEditBuilderUpdated(Builder $builder)
     {
-        self::$client->request('GET', '/login');
+        self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
             'email' => 'testmail@mail.com',
             'password' => '1234'
@@ -146,7 +146,7 @@ class BuilderControllerTest extends WebTestCase
      */
     public function testEditBuilderNotFound()
     {
-        self::$client->request('GET', '/login');
+        self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
             'email' => 'testmail@mail.com',
             'password' => '1234'
@@ -171,7 +171,7 @@ class BuilderControllerTest extends WebTestCase
      */
     public function testDeleteBuilderDeleted(Builder $builder)
     {
-        self::$client->request('GET', '/login');
+        self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
             'email' => 'testmail@mail.com',
             'password' => '1234'
@@ -196,7 +196,7 @@ class BuilderControllerTest extends WebTestCase
      */
     public function testDeleteBuilderNotFound()
     {
-        self::$client->request('GET', '/login');
+        self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
             'email' => 'testmail@mail.com',
             'password' => '1234'
