@@ -73,12 +73,12 @@ class Architect
     /**
      * @return Collection|Remodeling[]
      */
-    public function getremodelings(): Collection
+    public function getRemodelings(): Collection
     {
         return $this->remodelings;
     }
 
-    public function addremodeling(Remodeling $remodeling): self
+    public function addRemodeling(Remodeling $remodeling): self
     {
         if (!$this->remodelings->contains($remodeling)) {
             $this->remodelings[] = $remodeling;
@@ -88,7 +88,7 @@ class Architect
         return $this;
     }
 
-    public function removeremodeling(Remodeling $remodeling): self
+    public function removeRemodeling(Remodeling $remodeling): self
     {
         if ($this->remodelings->contains($remodeling)) {
             $this->remodelings->removeElement($remodeling);
