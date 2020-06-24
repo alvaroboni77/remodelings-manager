@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\Architect;
+use App\Entity\TechnicalArchitect;
 use App\Form\ArchitectType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -23,9 +24,11 @@ class ArchitectController extends AbstractController
     public function list()
     {
         $architects = $this->getDoctrine()->getRepository(Architect::class)->findAll();
+        $technicalArchitects = $this->getDoctrine()->getRepository(TechnicalArchitect::class)->findAll();
 
         return $this->render('architect/list.html.twig', [
-            'architects' => $architects
+            'architects' => $architects,
+            'technicalArchitects' => $technicalArchitects
         ]);
     }
 
@@ -74,7 +77,7 @@ class ArchitectController extends AbstractController
 
         if(!$architect) {
             throw $this->createNotFoundException(
-                'No builder found for id '.$id
+                'No architect found for id '.$id
             );
         }
 
