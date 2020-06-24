@@ -37,7 +37,7 @@ class ArchitectControllerTest extends WebTestCase
     }
 
     /**
-     * Implements testCreateView
+     * Implements testListView
      * @return void
      * @covers ::list
      */
