@@ -2,3 +2,38 @@
 
 {% block sectiontitle %}Nueva reforma
 {% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                {{ form_start(form) }}
+                {{ form_row(form.address) }}
+                {{ form_row(form.city) }}
+                {{ form_row(form.builtArea) }}
+                {{ form_row(form.startDate) }}
+                {{ form_row(form.constructionTime) }}
+                {{ form_row(form.type) }}
+                {{ form_row(form.Create, {
+                    'attr': {
+                        'class': 'btn btn-primary col-12 mt-3'
+                    }
+                }) }}
+
+            </div>
+            <div class="col-6">
+                <div class="border border-secondary rounded p-2 mt-2">
+                    {{ form_row(form.architect) }}
+                </div>
+                <div class="border border-secondary rounded p-2 mb-3 mt-4">
+                    {{ form_row(form.technicalArchitect) }}
+                </div>
+                <div class=" border border-secondary rounded p-2 ">
+                    {{ form_row(form.builder) }}
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
