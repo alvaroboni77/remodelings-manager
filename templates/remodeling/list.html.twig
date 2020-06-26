@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block sectiontitle %}Reformas{% endblock %}
+
 {% block body %}
 {{ parent() }}
-<!-- Content -->
 <div class="content mt-3">
     <div class="animated fadeIn">
         <div class="row">
@@ -11,6 +12,41 @@
                     <div class="card-header">
                         <strong class="card-title">Listado de reformas</strong>
                     </div>
+                    <div class="card-body">
+                        <table id="bootstrap-data-table-export" class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tipo</th>
+                                <th>Inmueble</th>
+                                <th>Constructor</th>
+                                <th>Arquitecto</th>
+                                <th>Arquitecto técnico</th>
+                                <th>Fecha inicio</th>
+                                <th>Días de obra</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for remodeling in remodelings %}
+                                <tr>
+                                    <td>{{ remodeling.id }}</td>
+                                    <td>{{ remodeling.type }}</td>
+                                    <td>{{ remodeling.address }} ({{ remodeling.city }})</td>
+                                    <td>{{ remodeling.builder.name }}</td>
+                                    <td>{{ remodeling.architect.name }}</td>
+                                    <td>{{ remodeling.technicalArchitect.name }}</td>
+                                    <td>{{ remodeling.startDate|date("d/m/Y") }}</td>
+                                    <td>{{ remodeling.constructionTime }}</td>
+                                    <td>
+                                        <a href="{{ path('remodeling_edit', { 'id': remodeling.id }) }}" class="btn btn-warning"><i class="fa fa-pencil"></i> Editar</a>
+                                        <button type="button" data-route="{{ path('remodeling_delete', { 'id':remodeling.id }) }}" class="btn btn-danger removeRemodeling"><i class="fa fa-trash-o"></i> Eliminar</button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -18,4 +54,35 @@
 </div>
 {% endblock %}
 
-{% block sectiontitle %}Reformas{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('js/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('js/datatables/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('js/datatables/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('js/datatables/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('js/jszip.min.js') }}"></script>
+    <script src="{{ asset('js/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('js/pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('js/datatables/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('js/datatables/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('js/datatables/buttons.colVis.min.js') }}"></script>
+    <script src="{{ asset('js/datatables-init.js') }}"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $('.removeRemodeling').click(function() {
+                if (confirm('¿Está seguro de eliminar esta reforma?')) {
+                    $.ajax({
+                        method: "POST",
+                        url: $(this).data('route'),
+                        success: function() {
+                            location.reload();
+                        },
+                        error: function(data) {
+                            alert(data.responseText);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock %}
