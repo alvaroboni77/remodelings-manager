@@ -36,6 +36,7 @@ class Architect
 
     /**
      * @ORM\OneToMany(targetEntity="Remodeling", mappedBy="architect")
+     *
      */
     private $remodelings;
 
@@ -95,7 +96,6 @@ class Architect
     {
         if ($this->remodelings->contains($remodeling)) {
             $this->remodelings->removeElement($remodeling);
-            // set the owning side to null (unless already changed)
             if ($remodeling->getArchitect() === $this) {
                 $remodeling->setArchitect(null);
             }

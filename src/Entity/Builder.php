@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -92,5 +93,35 @@ class Builder
     public function setCompany($company): void
     {
         $this->company = $company;
+    }
+
+    /**
+     * @return Collection|Remodeling[]
+     */
+    public function getRemodelings(): Collection
+    {
+        return $this->remodelings;
+    }
+
+    public function addRemodeling(Remodeling $remodeling): self
+    {
+        if (!$this->remodelings->contains($remodeling)) {
+            $this->remodelings[] = $remodeling;
+            $remodeling->setBuilder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRemodeling(Remodeling $remodeling): self
+    {
+        if ($this->remodelings->contains($remodeling)) {
+            $this->remodelings->removeElement($remodeling);
+            if ($remodeling->getBuilder() === $this) {
+                $remodeling->setBuilder(null);
+            }
+        }
+
+        return $this;
     }
 }

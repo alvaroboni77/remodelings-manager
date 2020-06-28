@@ -31,6 +31,7 @@
                                 <th>Nombre</th>
                                 <th>Email</th>
                                 <th>Empresa</th>
+                                <th>Proyectos asignados actualmente</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
@@ -41,6 +42,15 @@
                                     <td>{{ builder.name }}</td>
                                     <td>{{ builder.email }}</td>
                                     <td>{{ builder.company }}</td>
+                                    <td>
+                                        {% if builder.remodelings|length > 0 %}
+                                            <ul class="list-unstyled">
+                                                {% for remodeling in builder.remodelings %}
+                                                    <li>{{ remodeling.address }} ({{ remodeling.city }})</li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </td>
                                     <td>
                                         <a href="{{ path('builder_edit', { 'id': builder.id }) }}" class="btn btn-warning"><i class="fa fa-pencil"></i> Editar</a>
                                         <button data-route="{{ path('builder_delete', { 'id':builder.id }) }}" class="btn btn-danger removeBuilder"><i class="fa fa-trash-o"></i> Eliminar</button>

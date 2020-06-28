@@ -37,6 +37,7 @@
                                 <th>#</th>
                                 <th>Nombre</th>
                                 <th>Email</th>
+                                <th>Proyectos asignados actualmente</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
@@ -46,6 +47,15 @@
                                     <td>{{ architect.id }}</td>
                                     <td>{{ architect.name }}</td>
                                     <td>{{ architect.email }}</td>
+                                    <td>
+                                        {% if architect.remodelings|length > 0 %}
+                                            <ul class="list-unstyled">
+                                                {% for remodeling in architect.remodelings %}
+                                                    <li>{{ remodeling.address }} ({{ remodeling.city }})</li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </td>
                                     <td>
                                         <a href="{{ path('architect_edit', { 'id': architect.id }) }}" class="btn btn-warning"><i class="fa fa-pencil"></i> Editar</a>
                                         <button data-route="{{ path('architect_delete', { 'id':architect.id }) }}" class="btn btn-danger removeArchitect"><i class="fa fa-trash-o"></i> Eliminar</button>
@@ -71,6 +81,7 @@
                                 <th>#</th>
                                 <th>Nombre</th>
                                 <th>Email</th>
+                                <th>Proyectos asignados actualmente</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
@@ -80,6 +91,15 @@
                                     <td>{{ technicalArchitect.id }}</td>
                                     <td>{{ technicalArchitect.name }}</td>
                                     <td>{{ technicalArchitect.email }}</td>
+                                    <td>
+                                        {% if technicalArchitect.remodelings|length > 0 %}
+                                            <ul class="list-unstyled">
+                                                {% for remodeling in technicalArchitect.remodelings %}
+                                                    <li>{{ remodeling.address }} ({{ remodeling.city }})</li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </td>
                                     <td>
                                         <a href="{{ path('technical_architect_edit', { 'id': technicalArchitect.id }) }}" class="btn btn-warning"><i class="fa fa-pencil"></i> Editar</a>
                                         <button data-route="{{ path('technical_architect_delete', { 'id':technicalArchitect.id }) }}" class="btn btn-danger removeTechnicalArchitect"><i class="fa fa-trash-o"></i> Eliminar</button>
