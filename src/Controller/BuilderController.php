@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/builder", name="builder_")
@@ -130,5 +131,31 @@ class BuilderController extends AbstractController
         );
 
         return new Response('Builder deleted', 200);
+    }
+
+    /**
+     * @Route("/create", name="create")
+     * @param Request $request
+     * @param ValidatorInterface $validator
+     * @return Response
+     */
+    public function createFromRemodeling(Request $request, ValidatorInterface $validator): Response
+    {
+        $builder = new Builder();
+        $builder->setName($request->request->get('name'));
+        $builder->setEmail($request->request->get('email'));
+        $builder->setCompany($request->request->get('company'));
+
+        $errors = $validator->validate($builder);
+        if (count($errors) > 0) {
+            return new Response((string) $errors, 400);
+        } else {
+            // Save new architect into DB
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($builder);
+            $entityManager->flush();
+
+            return new Response('¡Constructor creado!', 200);
+        }
     }
 }
