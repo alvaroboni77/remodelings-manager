@@ -27,6 +27,9 @@ class Builder
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
+     * @Assert\Email(
+     *     message = "El email '{{ value }}' no es un email válido."
+     * )
      */
     private $email;
 
