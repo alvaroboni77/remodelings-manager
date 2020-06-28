@@ -25,15 +25,154 @@
             <div class="col-6">
                 <div class="border border-secondary rounded p-2 mt-2">
                     {{ form_row(form.architect) }}
+                    <div class="form-group">
+                        {{ form_widget(architectForm.name, {
+                            'attr': {
+                                'id': 'architect_name',
+                                'placeholder': 'Name',
+                                'class': 'form-control d-inline-block mr-2  '
+                            }
+                        }) }}
+                        {{ form_widget(architectForm.email, {
+                            'attr': {
+                                'id': 'architect_name',
+                                'placeholder': 'Email',
+                                'class': 'form-control d-inline-block mt-2 mr-2 mb-2'
+                            }
+                        }) }}
+                    </div>
+                    <button id="addArchitect" class="btn btn-success">
+                        <i class="fa fa-plus-circle"></i>
+                        Añadir arquitecto</button>
                 </div>
                 <div class="border border-secondary rounded p-2 mb-3 mt-4">
                     {{ form_row(form.technicalArchitect) }}
+                    <div class="form-group">
+                        {{ form_widget(technicalArchitectForm.name, {
+                            'attr': {
+                                'id': 'technical_architect_name',
+                                'placeholder': 'Name',
+                                'class': 'form-control d-inline-block mr-2 '
+                            }
+                        }) }}
+                        {{ form_widget(technicalArchitectForm.email, {
+                            'attr': {
+                                'id': 'technical_architect_name',
+                                'placeholder': 'Email',
+                                'class': 'form-control d-inline-block mt-2 mr-2 mb-2'
+                            }
+                        }) }}
+                    </div>
+                    <button id="addTechnicalArchitect" class="btn btn-success">
+                        <i class="fa fa-plus-circle"></i>
+                        Añadir arquitecto técnico</button>
                 </div>
                 <div class=" border border-secondary rounded p-2 ">
                     {{ form_row(form.builder) }}
+                    <div class="form-group">
+                        {{ form_widget(builderForm.name, {
+                            'attr': {
+                                'id': 'builder_name',
+                                'placeholder': 'Name',
+                                'class': 'form-control d-inline-block mr-2'
+                            }
+                        }) }}
+                        {{ form_widget(builderForm.email, {
+                            'attr': {
+                                'id': 'builder_name',
+                                'placeholder': 'Email',
+                                'class': 'form-control d-inline-block mt-2 mr-2 mb-2'
+                            }
+                        }) }}
+                        {{ form_widget(builderForm.company, {
+                            'attr': {
+                                'id': 'builder_company',
+                                'placeholder': 'Company',
+                                'class': 'form-control d-inline-block mt-2 mr-2 mb-2'
+                            }
+                        }) }}
+                    </div>
+                    <button id="addBuilder" class="btn btn-success">
+                        <i class="fa fa-plus-circle"></i>
+                        Añadir constructor</button>
                 </div>
             </div>
+                {{ form_end(form) }}
         </div>
-        {{ form_end(form) }}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $('#addBuilder').click(function (e) {
+                e.preventDefault();
+                $(this).html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+                $.ajax({
+                    url: "{{ path('builder_create') }}",
+                    method: "POST",
+                    data: {
+                        name: $('#builder_name').val(),
+                        email: $('#builder_email').val(),
+                        company: $('#builder_company').val()
+                    },
+                    success: function (data) {
+                        alert(data);
+                        location.reload();
+                        $('#builder_name').val('');
+                        $('#builder_email').val('');
+                        $('#builder_company').val('');
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                        $('#addBuilder').html('<i class="fa fa-plus-circle"></i> Añadir constructor');
+                    }
+                });
+            });
+            $('#addArchitect').click(function (e) {
+                e.preventDefault();
+                $(this).html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+                $.ajax({
+                    method: "POST",
+                    url: "{{ path('architect_create') }}",
+                    data: {
+                        name: $('#architect_name').val(),
+                        email: $('#architect_email').val()
+                    },
+                    success: function (data) {
+                        alert(data);
+                        location.reload();
+                        $('#architect_name').val('');
+                        $('#architect_email').val('');
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                        $('#addArchitect').html('<i class="fa fa-plus-circle"></i> Añadir arquitecto');
+                    }
+                });
+            });
+            $('#addTechnicalArchitect').click(function (e) {
+                e.preventDefault();
+                $(this).html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+                $.ajax({
+                    method: "POST",
+                    url: "{{ path('technical_architect_create') }}",
+                    data: {
+                        name: $('#technical_architect_name').val(),
+                        email: $('#technical_architect_email').val()
+                    },
+                    success: function (data) {
+                        alert(data);
+                        location.reload();
+                        $('#technical_architect_name').val('');
+                        $('#technical_architect_email').val('');
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                        $('#addTechnicalArchitect').html('<i class="fa fa-plus-circle"></i> Añadir arquitecto técnico');
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}

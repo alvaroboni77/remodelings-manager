@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/technical-architect", name="technical_architect_")
@@ -115,5 +116,29 @@ class TechnicalArquitectController extends AbstractController
         );
 
         return new Response('Technical architect deleted', 200);
+    }
+
+    /**
+     * @Route("/create", name="create")
+     * @param Request $request
+     * @param ValidatorInterface $validator
+     * @return Response
+     */
+    public function technicalArchitectCreate(Request $request, ValidatorInterface $validator): Response
+    {
+        $technicalArchitect = new TechnicalArchitect();
+        $technicalArchitect->setName($request->request->get('name'));
+        $technicalArchitect->setEmail($request->request->get('email'));
+
+        $errors = $validator->validate($technicalArchitect);
+        if (count($errors) > 0) {
+            return new Response((string)$errors, 400);
+        } else {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($technicalArchitect);
+            $entityManager->flush();
+
+            return new Response('¡Arquitecto ténico creado!', 200);
+        }
     }
 }

@@ -3,8 +3,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Architect;
+use App\Entity\Builder;
 use App\Entity\Remodeling;
+use App\Entity\TechnicalArchitect;
+use App\Form\ArchitectType;
+use App\Form\BuilderType;
 use App\Form\RemodelingType;
+use App\Form\TechnicalArchitectType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -36,9 +42,16 @@ class RemodelingController extends AbstractController
     public function create(Request $request)
     {
         $remodeling = new Remodeling();
+        $builder = new Builder();
+        $architect = new Architect();
+        $technicalArchitect = new TechnicalArchitect();
 
         $form = $this->createForm(RemodelingType::class, $remodeling);
         $form->add('Create', SubmitType::class);
+
+        $builderForm = $this->createForm(BuilderType::class, $builder);
+        $architectForm = $this->createForm(ArchitectType::class, $architect);
+        $technicalArchitectForm = $this->createForm(TechnicalArchitectType::class, $technicalArchitect);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -57,7 +70,10 @@ class RemodelingController extends AbstractController
         }
 
         return $this->render('remodeling/new.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'builderForm' => $builderForm->createView(),
+            'architectForm' => $architectForm->createView(),
+            'technicalArchitectForm' => $technicalArchitectForm->createView()
         ]);
     }
 
@@ -71,8 +87,16 @@ class RemodelingController extends AbstractController
     {
         $remodeling = $this->getDoctrine()->getRepository(Remodeling::class)->find($id);
 
+        $builder = new Builder();
+        $architect = new Architect();
+        $technicalArchitect = new TechnicalArchitect();
+
         $form = $this->createForm(RemodelingType::class, $remodeling);
         $form->add('Update', SubmitType::class);
+
+        $builderForm = $this->createForm(BuilderType::class, $builder);
+        $architectForm = $this->createForm(ArchitectType::class, $architect);
+        $technicalArchitectForm = $this->createForm(TechnicalArchitectType::class, $technicalArchitect);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -92,7 +116,10 @@ class RemodelingController extends AbstractController
 
         return $this->render('remodeling/edit.html.twig', [
             'remodeling' => $remodeling,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'builderForm' => $builderForm->createView(),
+            'architectForm' => $architectForm->createView(),
+            'technicalArchitectForm' => $technicalArchitectForm->createView()
         ]);
     }
 
@@ -101,7 +128,7 @@ class RemodelingController extends AbstractController
      * @param int $id
      * @return Response
      */
-    public function siteProjectDelete(int $id)
+    public function delete(int $id)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $remodeling = $entityManager->getRepository(Remodeling::class)->find($id);

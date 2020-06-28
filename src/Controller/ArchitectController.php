@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/architect", name="architect_")
@@ -131,6 +132,30 @@ class ArchitectController extends AbstractController
         );
 
         return new Response('Architect deleted', 200);
+    }
+
+    /**
+     * @Route("/create", name="create")
+     * @param Request $request
+     * @param ValidatorInterface $validator
+     * @return Response
+     */
+    public function createFromRemodeling(Request $request, ValidatorInterface $validator): Response
+    {
+        $architect = new Architect();
+        $architect->setName($request->request->get('name'));
+        $architect->setEmail($request->request->get('email'));
+
+        $errors = $validator->validate($architect);
+        if (count($errors) > 0) {
+            return new Response((string) $errors, 400);
+        } else {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($architect);
+            $entityManager->flush();
+
+            return new Response('¡Arquitecto creado!', 201);
+        }
     }
 
 }
