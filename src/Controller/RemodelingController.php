@@ -114,7 +114,7 @@ class RemodelingController extends AbstractController
             return $this->redirectToRoute('remodeling_list');
         }
 
-        return $this->render('remodeling/edit.html.twig', [
+        return $this->render('remodeling/show.html.twig', [
             'remodeling' => $remodeling,
             'form' => $form->createView(),
             'builderForm' => $builderForm->createView(),

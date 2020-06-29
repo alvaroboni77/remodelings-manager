@@ -24,6 +24,7 @@
                                 <th>Arquitecto técnico</th>
                                 <th>Fecha inicio</th>
                                 <th>Días de obra</th>
+                                <th>Demoras</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
@@ -38,6 +39,19 @@
                                     <td>{{ remodeling.technicalArchitect.name }}</td>
                                     <td>{{ remodeling.startDate|date("d/m/Y") }}</td>
                                     <td>{{ remodeling.constructionTime }}</td>
+                                    <td>
+                                    {% if remodeling.delays|length > 0 %}
+                                        <ul class="list-unstyled">
+                                            {% for delay in remodeling.delays %}
+                                                <li class="border-bottom border-secondary py-1">
+                                                    +{{ delay.days }} días <a href="{{ path('delay_show', { 'id': delay.id }) }}" class="btn btn-outline-info btn-sm mb-2" target="_blank"><i class="fa fa-eye"></i></a>
+                                                    <textarea disabled>{{ delay.note }}</textarea>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                    <a href="{{ path('delay_create', { 'remodeling': remodeling.id }) }}" class="btn btn-primary"><i class="fa fa-file-text-o"></i> Nueva modificación</a>
+                                    </td>
                                     <td>
                                         <a href="{{ path('remodeling_edit', { 'id': remodeling.id }) }}" class="btn btn-warning"><i class="fa fa-pencil"></i> Editar</a>
                                         <button type="button" data-route="{{ path('remodeling_delete', { 'id':remodeling.id }) }}" class="btn btn-danger removeRemodeling"><i class="fa fa-trash-o"></i> Eliminar</button>
