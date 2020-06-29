@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -66,6 +67,16 @@ class Remodeling
      */
     private $technicalArchitect;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Delay::class, mappedBy="remodeling")
+     */
+    private $delays;
+
+    public function __construct()
+    {
+        $this->delays = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,12 +118,12 @@ class Remodeling
         return $this;
     }
 
-    public function getStartDate(): ?\DateTimeInterface
+    public function getStartDate(): ?DateTimeInterface
     {
         return $this->startDate;
     }
 
-    public function setStartDate(\DateTimeInterface $startDate): self
+    public function setStartDate(DateTimeInterface $startDate): self
     {
         $this->startDate = $startDate;
 
@@ -175,6 +186,37 @@ class Remodeling
     public function setTechnicalArchitect(?TechnicalArchitect $technicalArchitect): self
     {
         $this->technicalArchitect = $technicalArchitect;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Delay[]
+     */
+    public function getDelays(): Collection
+    {
+        return $this->delays;
+    }
+
+    public function addDelay(Delay $delay): self
+    {
+        if (!$this->delays->contains($delay)) {
+            $this->delays[] = $delay;
+            $delay->setRemodeling($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDelay(Delay $delay): self
+    {
+        if ($this->delays->contains($delay)) {
+            $this->delays->removeElement($delay);
+            // set the owning side to null (unless already changed)
+            if ($delay->getRemodeling() === $this) {
+                $delay->setRemodeling(null);
+            }
+        }
 
         return $this;
     }
