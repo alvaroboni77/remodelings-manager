@@ -85,7 +85,7 @@ class TechnicalArquitectController extends AbstractController
             return $this->redirectToRoute('architect_list');
         }
 
-        return $this->render('technical-architect/edit.html.twig', [
+        return $this->render('technical-architect/show.html.twig', [
             'technicalArchitect' => $technicalArchitect,
             'form' => $form->createView()
         ]);

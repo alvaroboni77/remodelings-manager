@@ -101,7 +101,7 @@ class ArchitectController extends AbstractController
             return $this->redirectToRoute('architect_list');
         }
 
-        return $this->render('architect/edit.html.twig', [
+        return $this->render('architect/show.html.twig', [
             'architect' => $architect,
             'form' => $form->createView()
         ]);

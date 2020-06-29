@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -100,7 +99,7 @@ class BuilderController extends AbstractController
             return $this->redirectToRoute('builder_list');
         }
 
-        return $this->render('builder/edit.html.twig', [
+        return $this->render('builder/show.html.twig', [
             'builder' => $builder,
             'form' => $form->createView()
         ]);
