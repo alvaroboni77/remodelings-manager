@@ -5,17 +5,21 @@ namespace App\Tests\Entity;
 
 
 use App\Entity\User;
-use Exception;
 use Faker\Factory as FakerFactoryAlias;
 use Faker\Generator as FakerGeneratorAlias;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class UserTest
+ * @package App\Tests\Entity
+ * @coversDefaultClass \App\Entity\User
+ */
 class UserTest extends TestCase
 {
     /**
      * @var User
      */
-    protected static $usuario;
+    protected static $user;
 
     /** @var FakerGeneratorAlias $faker */
     private static $faker;
@@ -23,10 +27,10 @@ class UserTest extends TestCase
     /**
      * Sets up the fixture.
      * This method is called before a test is executed.
+     * @return void
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
-        self::$usuario = new User();
         self::$faker = FakerFactoryAlias::create('es_ES');
     }
 
@@ -39,10 +43,10 @@ class UserTest extends TestCase
     public function testConstructor(): void
     {
         $email = self::$faker->email;
-        self::$usuario = new User();
-        self::$usuario->setEmail($email);
-        self::assertEquals(0, self::$usuario->getId());
-        self::assertEquals($email, self::$usuario->getEmail());
+        self::$user = new User();
+        self::$user->setEmail($email);
+        self::assertEquals(0, self::$user->getId());
+        self::assertEquals($email, self::$user->getEmail());
     }
 
     /**
@@ -53,7 +57,7 @@ class UserTest extends TestCase
      */
     public function testGetId(): void
     {
-        self::assertEmpty(self::$usuario->getId());
+        self::assertEmpty(self::$user->getId());
     }
 
     /**
@@ -61,16 +65,32 @@ class UserTest extends TestCase
      *
      * @covers ::getEmail()
      * @covers ::setEmail()
-     * @throws Exception
      * @return void
      */
     public function testGetSetEmail(): void
     {
         $userEmail = self::$faker->email;
-        self::$usuario->setEmail($userEmail);
+        self::$user->setEmail($userEmail);
         static::assertEquals(
             $userEmail,
-            self::$usuario->getEmail()
+            self::$user->getEmail()
+        );
+    }
+
+    /**
+     * Implements testGetSetName().
+     *
+     * @covers ::getName()
+     * @covers ::setName()
+     * @return void
+     */
+    public function testGetSetName(): void
+    {
+        $userName = self::$faker->name;
+        self::$user->setName($userName);
+        static::assertEquals(
+            $userName,
+            self::$user->getName()
         );
     }
 
@@ -80,15 +100,14 @@ class UserTest extends TestCase
      * @covers ::getPassword()
      * @covers ::setPassword()
      * @return void
-     * @throws Exception
      */
     public function testGetSetPassword(): void
     {
         $password = self::$faker->password;
-        self::$usuario->setPassword($password);
+        self::$user->setPassword($password);
         self::assertEquals(
             $password,
-            self::$usuario->getPassword()
+            self::$user->getPassword()
         );
     }
 
@@ -103,13 +122,13 @@ class UserTest extends TestCase
     {
         self::assertContains(
             'ROLE_USER',
-            self::$usuario->getRoles()
+            self::$user->getRoles()
         );
         $role = self::$faker->slug;
-        self::$usuario->setRoles([ $role ]);
+        self::$user->setRoles([ $role ]);
         self::assertContains(
             $role,
-            self::$usuario->getRoles()
+            self::$user->getRoles()
         );
     }
 
@@ -121,6 +140,6 @@ class UserTest extends TestCase
      */
     public function testGetSalt(): void
     {
-        self::assertNull(self::$usuario->getSalt());
+        self::assertNull(self::$user->getSalt());
     }
 }
