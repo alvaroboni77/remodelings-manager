@@ -40,6 +40,7 @@ class ArchitectController extends AbstractController
      */
     public function create(Request $request)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $architect = new Architect();
 
         $form = $this->createForm(ArchitectType::class, $architect);
@@ -74,8 +75,9 @@ class ArchitectController extends AbstractController
      */
     public function edit(Request $request, int $id)
     {
-        $architect = $this->getDoctrine()->getRepository(Architect::class)->find($id);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
+        $architect = $this->getDoctrine()->getRepository(Architect::class)->find($id);
         if(!$architect) {
             throw $this->createNotFoundException(
                 'No architect found for id '.$id
@@ -101,7 +103,7 @@ class ArchitectController extends AbstractController
             return $this->redirectToRoute('architect_list');
         }
 
-        return $this->render('architect/show.html.twig', [
+        return $this->render('architect/edit.html.twig', [
             'architect' => $architect,
             'form' => $form->createView()
         ]);
@@ -114,9 +116,10 @@ class ArchitectController extends AbstractController
      */
     public function delete(int $id)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $entityManager = $this->getDoctrine()->getManager();
         $builder = $entityManager->getRepository(Architect::class)->find($id);
-
         if(!$builder) {
             throw $this->createNotFoundException(
                 'No builder found for id '.$id
@@ -142,6 +145,8 @@ class ArchitectController extends AbstractController
      */
     public function createFromRemodeling(Request $request, ValidatorInterface $validator): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $architect = new Architect();
         $architect->setName($request->request->get('name'));
         $architect->setEmail($request->request->get('email'));

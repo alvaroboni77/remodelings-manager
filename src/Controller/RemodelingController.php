@@ -41,6 +41,8 @@ class RemodelingController extends AbstractController
      */
     public function create(Request $request)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $remodeling = new Remodeling();
         $builder = new Builder();
         $architect = new Architect();
@@ -85,6 +87,8 @@ class RemodelingController extends AbstractController
      */
     public function edit(Request $request, int $id)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $remodeling = $this->getDoctrine()->getRepository(Remodeling::class)->find($id);
 
         $builder = new Builder();
@@ -130,6 +134,8 @@ class RemodelingController extends AbstractController
      */
     public function delete(int $id)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $entityManager = $this->getDoctrine()->getManager();
         $remodeling = $entityManager->getRepository(Remodeling::class)->find($id);
 

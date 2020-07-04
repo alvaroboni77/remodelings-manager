@@ -38,6 +38,8 @@ class BuilderController extends AbstractController
      */
     public function create(Request $request)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $builder = new Builder();
 
         $form = $this->createForm(BuilderType::class, $builder);
@@ -72,6 +74,8 @@ class BuilderController extends AbstractController
      */
     public function edit(Request $request, int $id)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $builder = $this->getDoctrine()->getRepository(Builder::class)->find($id);
 
         if(!$builder) {
@@ -99,7 +103,7 @@ class BuilderController extends AbstractController
             return $this->redirectToRoute('builder_list');
         }
 
-        return $this->render('builder/show.html.twig', [
+        return $this->render('builder/edit.html.twig', [
             'builder' => $builder,
             'form' => $form->createView()
         ]);
@@ -112,6 +116,8 @@ class BuilderController extends AbstractController
      */
     public function delete(int $id)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $entityManager = $this->getDoctrine()->getManager();
         $builder = $entityManager->getRepository(Builder::class)->find($id);
 
@@ -140,6 +146,8 @@ class BuilderController extends AbstractController
      */
     public function createFromRemodeling(Request $request, ValidatorInterface $validator): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $builder = new Builder();
         $builder->setName($request->request->get('name'));
         $builder->setEmail($request->request->get('email'));
