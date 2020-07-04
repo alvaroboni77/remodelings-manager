@@ -46,7 +46,7 @@ class TechnicalArchitectControllerTest extends WebTestCase
     {
         self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
-            'email' => 'testmail@mail.com',
+            'email' => 'admin@mail.com',
             'password' => '1234'
         ], 'POST');
 
@@ -65,7 +65,7 @@ class TechnicalArchitectControllerTest extends WebTestCase
     {
         self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
-            'email' => 'testmail@mail.com',
+            'email' => 'admin@mail.com',
             'password' => '1234'
         ], 'POST');
 
@@ -84,7 +84,7 @@ class TechnicalArchitectControllerTest extends WebTestCase
     {
         self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
-            'email' => 'testmail@mail.com',
+            'email' => 'admin@mail.com',
             'password' => '1234'
         ], 'POST');
 
@@ -117,7 +117,7 @@ class TechnicalArchitectControllerTest extends WebTestCase
     {
         self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
-            'email' => 'testmail@mail.com',
+            'email' => 'admin@mail.com',
             'password' => '1234'
         ], 'POST');
 
@@ -146,7 +146,7 @@ class TechnicalArchitectControllerTest extends WebTestCase
     {
         self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
-            'email' => 'testmail@mail.com',
+            'email' => 'admin@mail.com',
             'password' => '1234'
         ], 'POST');
 
@@ -171,7 +171,7 @@ class TechnicalArchitectControllerTest extends WebTestCase
     {
         self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
-            'email' => 'testmail@mail.com',
+            'email' => 'admin@mail.com',
             'password' => '1234'
         ], 'POST');
 
@@ -196,7 +196,7 @@ class TechnicalArchitectControllerTest extends WebTestCase
     {
         self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
-            'email' => 'testmail@mail.com',
+            'email' => 'admin@mail.com',
             'password' => '1234'
         ], 'POST');
 

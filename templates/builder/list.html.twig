@@ -32,7 +32,9 @@
                                 <th>Email</th>
                                 <th>Empresa</th>
                                 <th>Proyectos asignados actualmente</th>
+                                {% if is_granted('ROLE_ADMIN') %}
                                 <th>Acciones</th>
+                                {% endif %}
                             </tr>
                             </thead>
                             <tbody>
@@ -51,10 +53,12 @@
                                             </ul>
                                         {% endif %}
                                     </td>
+                                    {% if is_granted('ROLE_ADMIN') %}
                                     <td>
                                         <a href="{{ path('builder_edit', { 'id': builder.id }) }}" class="btn btn-warning"><i class="fa fa-pencil"></i> Editar</a>
                                         <button data-route="{{ path('builder_delete', { 'id':builder.id }) }}" class="btn btn-danger removeBuilder"><i class="fa fa-trash-o"></i> Eliminar</button>
                                     </td>
+                                    {% endif %}
                                 </tr>
                             {% endfor %}
                             </tbody>

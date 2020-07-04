@@ -24,6 +24,8 @@ class TechnicalArquitectController extends AbstractController
      */
     public function create(Request $request)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $technicalArchitect = new TechnicalArchitect();
 
         $form = $this->createForm(TechnicalArchitectType::class, $technicalArchitect);
@@ -58,6 +60,8 @@ class TechnicalArquitectController extends AbstractController
      */
     public function edit(Request $request, int $id)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $technicalArchitect = $this->getDoctrine()->getRepository(TechnicalArchitect::class)->find($id);
 
         if(!$technicalArchitect) {
@@ -85,7 +89,7 @@ class TechnicalArquitectController extends AbstractController
             return $this->redirectToRoute('architect_list');
         }
 
-        return $this->render('technical-architect/show.html.twig', [
+        return $this->render('technical-architect/edit.html.twig', [
             'technicalArchitect' => $technicalArchitect,
             'form' => $form->createView()
         ]);
@@ -98,6 +102,8 @@ class TechnicalArquitectController extends AbstractController
      */
     public function delete(int $id)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $entityManager = $this->getDoctrine()->getManager();
         $technicalArchitect = $entityManager->getRepository(TechnicalArchitect::class)->find($id);
 
@@ -126,6 +132,8 @@ class TechnicalArquitectController extends AbstractController
      */
     public function technicalArchitectCreate(Request $request, ValidatorInterface $validator): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $technicalArchitect = new TechnicalArchitect();
         $technicalArchitect->setName($request->request->get('name'));
         $technicalArchitect->setEmail($request->request->get('email'));

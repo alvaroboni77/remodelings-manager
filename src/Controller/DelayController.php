@@ -28,6 +28,8 @@ class DelayController extends AbstractController
      */
     public function create(Request $request)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $delay = new Delay();
 
         $form = $this->createForm(DelayType::class, $delay);
