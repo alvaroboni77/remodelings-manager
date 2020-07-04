@@ -5,9 +5,6 @@ namespace App\Tests\Controller;
 
 
 use App\Entity\Remodeling;
-use App\Repository\ArchitectRepository;
-use App\Repository\BuilderRepository;
-use App\Repository\TechnicalArchitectRepository;
 use App\Repository\RemodelingRepository;
 use Faker\Factory as FakerFactoryAlias;
 use Faker\Generator as FakerGeneratorAlias;
@@ -51,7 +48,7 @@ class RemodelingControllerTest extends WebTestCase
     {
         self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
-            'email' => 'testmail@mail.com',
+            'email' => 'admin@mail.com',
             'password' => '1234'
         ], 'POST');
 
@@ -70,7 +67,7 @@ class RemodelingControllerTest extends WebTestCase
     {
         self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
-            'email' => 'testmail@mail.com',
+            'email' => 'admin@mail.com',
             'password' => '1234'
         ], 'POST');
 
@@ -89,7 +86,7 @@ class RemodelingControllerTest extends WebTestCase
     {
         self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
-            'email' => 'testmail@mail.com',
+            'email' => 'admin@mail.com',
             'password' => '1234'
         ], 'POST');
 
@@ -120,8 +117,8 @@ class RemodelingControllerTest extends WebTestCase
         $values['remodeling']['technicalArchitect'] = $technicalArchitectId;
         $values['remodeling']['builder'] = $builderId;
 
-//        self::$client->request($form->getMethod(), $form->getUri(), $values);
-        self::$client->submitForm($form, $values);
+        self::$client->request($form->getMethod(), $form->getUri(), $values);
+//        self::$client->submitForm($form, $values);
 
 //        self::$client->submitForm('remodeling[Create]', [
 //            'remodeling[type]' => $type,
