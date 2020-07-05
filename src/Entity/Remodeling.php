@@ -72,8 +72,14 @@ class Remodeling
      */
     private $delays;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CertificationReport", mappedBy="remodeling", orphanRemoval=true)
+     */
+    private $certificationReports;
+
     public function __construct()
     {
+        $this->certificationReports = new ArrayCollection();
         $this->delays = new ArrayCollection();
     }
 
@@ -186,6 +192,37 @@ class Remodeling
     public function setTechnicalArchitect(?TechnicalArchitect $technicalArchitect): self
     {
         $this->technicalArchitect = $technicalArchitect;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CertificationReport[]
+     */
+    public function getCertificationReports(): Collection
+    {
+        return $this->certificationReports;
+    }
+
+    public function addCertificationReport(CertificationReport $certificationReport): self
+    {
+        if (!$this->certificationReports->contains($certificationReport)) {
+            $this->certificationReports[] = $certificationReport;
+            $certificationReport->setRemodeling($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCertificationReport(CertificationReport $certificationReport): self
+    {
+        if ($this->certificationReports->contains($certificationReport)) {
+            $this->certificationReports->removeElement($certificationReport);
+            // set the owning side to null (unless already changed)
+            if ($certificationReport->getRemodeling() === $this) {
+                $certificationReport->setRemodeling(null);
+            }
+        }
 
         return $this;
     }

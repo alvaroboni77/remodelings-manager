@@ -26,6 +26,7 @@
                                     <th>Días de obra</th>
                                     <th>Demoras</th>
                                     {% if is_granted('ROLE_ADMIN') %}
+                                    <th>Certificados</th>
                                     <th>Acciones</th>
                                     {% endif %}
                                 </tr>
@@ -42,19 +43,44 @@
                                     <td>{{ remodeling.startDate|date("d/m/Y") }}</td>
                                     <td>{{ remodeling.constructionTime }}</td>
                                     <td>
-                                    {% if remodeling.delays|length > 0 %}
-                                        <ul class="list-unstyled">
-                                            {% for delay in remodeling.delays %}
-                                                <li class="border-bottom border-secondary py-1">
-                                                    +{{ delay.days }} días <a href="{{ path('delay_show', { 'id': delay.id }) }}" class="btn btn-outline-info btn-sm mb-2" target="_blank"><i class="fa fa-eye"></i></a>
-                                                    <textarea disabled>{{ delay.note }}</textarea>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    {% endif %}
-                                    {% if is_granted('ROLE_ADMIN') %}
-                                    <a href="{{ path('delay_create', { 'remodeling': remodeling.id }) }}" class="btn btn-primary"><i class="fa fa-file-text-o"></i> Nueva modificación</a>
-                                    {% endif %}
+                                        {% if remodeling.delays|length > 0 %}
+                                            <ul class="list-unstyled">
+                                                {% for delay in remodeling.delays %}
+                                                    <li class="border-bottom border-secondary py-1">
+                                                        +{{ delay.days }} días <a href="{{ path('delay_show', { 'id': delay.id }) }}" class="btn btn-outline-info btn-sm mb-2" target="_blank"><i class="fa fa-eye"></i></a>
+                                                        <textarea disabled>{{ delay.note }}</textarea>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                        <a href="{{ path('delay_create', { 'remodeling': remodeling.id }) }}" class="btn btn-primary"><i class="fa fa-file-text-o"></i> Nueva demora</a>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if remodeling.certificationReports|length > 0 %}
+                                            <ul class="list-unstyled">
+                                                {% for certificate in remodeling.certificationReports %}
+                                                    <li><i class="fa fa-file-pdf-o mr-1"></i>Fase {{ certificate.checkOrder }}
+                                                        {% if not certificate.finished %}
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input doneCheck" type="checkbox" value="" data-route="{{ path('certification_report_update', { 'certificateId':certificate.id }) }}">
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Firmado
+                                                            </label>
+                                                        </div>
+                                                        {% else %}
+                                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                                        {% endif %}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                            {% if remodeling.certificationReports|length < 4 and remodeling.certificationReports|last.finished %}
+                                                <a href="{{ path('certification_report_create', { 'remodelingId': remodeling.id }) }}" class="btn btn-primary"><i class="fa fa-file-pdf-o"></i> Generar certificado</a>
+                                            {% endif %}
+                                        {% else %}
+                                            <a href="{{ path('certification_report_create', { 'remodelingId': remodeling.id }) }}" class="btn btn-primary"><i class="fa fa-file-pdf-o"></i> Generar certificado</a>
+                                        {% endif %}
                                     </td>
                                     {% if is_granted('ROLE_ADMIN') %}
                                     <td>
@@ -86,6 +112,7 @@
     <script src="{{ asset('js/datatables-init.js') }}"></script>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
+            $('.doneCheck').prop('checked', false);
             $('.removeRemodeling').click(function() {
                 if (confirm('¿Está seguro de eliminar esta reforma?')) {
                     $.ajax({
@@ -100,6 +127,20 @@
                     });
                 }
             });
+            $('.doneCheck').click(function () {
+                if (confirm('¿Está seguro que desea dar por terminada esta fase?')) {
+                    $.ajax({
+                        method: "POST",
+                        url: $(this).data('route'),
+                        success: function() {
+                            location.reload();
+                        },
+                        error: function(data) {
+                            alert(data.responseText);
+                        }
+                    });
+                }
+            })
         });
     </script>
 {% endblock %}

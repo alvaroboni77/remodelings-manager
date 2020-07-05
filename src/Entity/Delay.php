@@ -28,10 +28,19 @@ class Delay
     private $days;
 
     /**
+     * @ORM\Column(type="date")
+     */
+    private $creationDate;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Remodeling::class, inversedBy="delays")
      * @ORM\JoinColumn(name="remodeling_id", referencedColumnName="id",nullable=false)
      */
     private $remodeling;
+
+    public function __construct() {
+        $this->setCreationDate(new \DateTime());
+    }
 
     public function getId(): ?int
     {
@@ -60,6 +69,16 @@ class Delay
         $this->days = $days;
 
         return $this;
+    }
+
+    public function getCreationDate()
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate($creationDate): void
+    {
+        $this->creationDate = $creationDate;
     }
 
     public function getRemodeling(): ?Remodeling
