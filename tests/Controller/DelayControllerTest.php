@@ -87,6 +87,7 @@ class DelayControllerTest extends WebTestCase
         $response = self::$client->getResponse();
         self::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
         self::assertTrue($response->isRedirect(self::REMODELING_PATH.'/'));
+        self::assertStringContainsString($note, $delay->getNote());
 
         return $delay;
     }
