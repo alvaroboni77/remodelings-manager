@@ -46,7 +46,7 @@
                                     <td>{{ builder.company }}</td>
                                     <td>
                                         {% if builder.remodelings|length > 0 %}
-                                            <ul class="list-unstyled">
+                                            <ul class="pl-2">
                                                 {% for remodeling in builder.remodelings %}
                                                     <li>{{ remodeling.address }} ({{ remodeling.city }})</li>
                                                 {% endfor %}
@@ -55,7 +55,7 @@
                                     </td>
                                     {% if is_granted('ROLE_ADMIN') %}
                                     <td>
-                                        <a href="{{ path('builder_edit', { 'id': builder.id }) }}" class="btn btn-warning"><i class="fa fa-pencil"></i> Editar</a>
+                                        <a href="{{ path('builder_edit', { 'id': builder.id }) }}" class="btn btn-warning mb-2"><i class="fa fa-pencil"></i> Editar</a>
                                         <button data-route="{{ path('builder_delete', { 'id':builder.id }) }}" class="btn btn-danger removeBuilder"><i class="fa fa-trash-o"></i> Eliminar</button>
                                     </td>
                                     {% endif %}

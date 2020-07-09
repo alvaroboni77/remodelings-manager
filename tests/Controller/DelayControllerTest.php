@@ -47,7 +47,7 @@ class DelayControllerTest extends WebTestCase
     {
         self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
-            'email' => 'testmail@mail.com',
+            'email' => 'admin@mail.com',
             'password' => '1234'
         ], 'POST');
 
@@ -66,7 +66,7 @@ class DelayControllerTest extends WebTestCase
     {
         self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
-            'email' => 'testmail@mail.com',
+            'email' => 'admin@mail.com',
             'password' => '1234'
         ], 'POST');
 
@@ -87,6 +87,7 @@ class DelayControllerTest extends WebTestCase
         $response = self::$client->getResponse();
         self::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
         self::assertTrue($response->isRedirect(self::REMODELING_PATH.'/'));
+        self::assertStringContainsString($note, $delay->getNote());
 
         return $delay;
     }
@@ -100,7 +101,7 @@ class DelayControllerTest extends WebTestCase
     {
         self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
-            'email' => 'testmail@mail.com',
+            'email' => 'admin@mail.com',
             'password' => '1234'
         ], 'POST');
 
@@ -133,7 +134,7 @@ class DelayControllerTest extends WebTestCase
     {
         self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
-            'email' => 'testmail@mail.com',
+            'email' => 'admin@mail.com',
             'password' => '1234'
         ], 'POST');
 
@@ -153,7 +154,7 @@ class DelayControllerTest extends WebTestCase
     {
         self::$client->request('GET', self::LOGIN_PATH);
         self::$client->submitForm('Acceder', [
-            'email' => 'testmail@mail.com',
+            'email' => 'admin@mail.com',
             'password' => '1234'
         ], 'POST');
 

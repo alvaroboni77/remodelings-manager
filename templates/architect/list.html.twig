@@ -51,7 +51,7 @@
                                     <td>{{ architect.email }}</td>
                                     <td>
                                         {% if architect.remodelings|length > 0 %}
-                                            <ul class="list-unstyled">
+                                            <ul class="pl-2">
                                                 {% for remodeling in architect.remodelings %}
                                                     <li>{{ remodeling.address }} ({{ remodeling.city }})</li>
                                                 {% endfor %}
@@ -60,7 +60,7 @@
                                     </td>
                                     {% if is_granted('ROLE_ADMIN') %}
                                     <td>
-                                        <a href="{{ path('architect_edit', { 'id': architect.id }) }}" class="btn btn-warning"><i class="fa fa-pencil"></i> Editar</a>
+                                        <a href="{{ path('architect_edit', { 'id': architect.id }) }}" class="btn btn-warning mb-2"><i class="fa fa-pencil"></i> Editar</a>
                                         <button data-route="{{ path('architect_delete', { 'id':architect.id }) }}" class="btn btn-danger removeArchitect"><i class="fa fa-trash-o"></i> Eliminar</button>
                                     </td>
                                     {% endif %}
@@ -99,7 +99,7 @@
                                     <td>{{ technicalArchitect.email }}</td>
                                     <td>
                                         {% if technicalArchitect.remodelings|length > 0 %}
-                                            <ul class="list-unstyled">
+                                            <ul class="pl-2">
                                                 {% for remodeling in technicalArchitect.remodelings %}
                                                     <li>{{ remodeling.address }} ({{ remodeling.city }})</li>
                                                 {% endfor %}
@@ -108,7 +108,7 @@
                                     </td>
                                     {% if is_granted('ROLE_ADMIN') %}
                                     <td>
-                                        <a href="{{ path('technical_architect_edit', { 'id': technicalArchitect.id }) }}" class="btn btn-warning"><i class="fa fa-pencil"></i> Editar</a>
+                                        <a href="{{ path('technical_architect_edit', { 'id': technicalArchitect.id }) }}" class="btn btn-warning mb-2"><i class="fa fa-pencil"></i> Editar</a>
                                         <button data-route="{{ path('technical_architect_delete', { 'id':technicalArchitect.id }) }}" class="btn btn-danger removeTechnicalArchitect"><i class="fa fa-trash-o"></i> Eliminar</button>
                                     </td>
                                     {% endif %}

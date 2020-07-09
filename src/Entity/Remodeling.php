@@ -50,19 +50,19 @@ class Remodeling
     private $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Builder", inversedBy="siteProjects")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Builder", inversedBy="siteProjects", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $builder;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Architect", inversedBy="siteProjects")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Architect", inversedBy="siteProjects", cascade={"persist"})
      * @ORM\JoinColumn(name="architect_id", referencedColumnName="id", nullable=false)
      */
     private $architect;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TechnicalArchitect", inversedBy="siteProjects")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TechnicalArchitect", inversedBy="siteProjects", cascade={"persist"})
      * @ORM\JoinColumn(name="technical_architect_id", referencedColumnName="id", nullable=false)
      */
     private $technicalArchitect;

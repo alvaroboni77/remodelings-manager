@@ -38,25 +38,6 @@ class TechnicalArchitectControllerTest extends WebTestCase
     }
 
     /**
-     * Implements testListView
-     * @return void
-     * @covers ::list
-     */
-    public function testListView()
-    {
-        self::$client->request('GET', self::LOGIN_PATH);
-        self::$client->submitForm('Acceder', [
-            'email' => 'admin@mail.com',
-            'password' => '1234'
-        ], 'POST');
-
-        self::$client->request('GET', self::ARCHITECT_PATH.'/');
-
-        $response = self::$client->getResponse();
-        self::assertEquals(Response::HTTP_OK, $response->getStatusCode());
-    }
-
-    /**
      * Implements testCreateView
      * @return void
      * @covers ::create
