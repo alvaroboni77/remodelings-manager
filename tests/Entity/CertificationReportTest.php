@@ -6,6 +6,7 @@ namespace App\Tests\Entity;
 
 use App\Entity\CertificationReport;
 use App\Entity\Remodeling;
+use DateTime;
 use Faker\Factory as FakerFactoryAlias;
 use Faker\Generator as FakerGeneratorAlias;
 use PHPUnit\Framework\TestCase;
@@ -48,7 +49,7 @@ class CertificationReportTest extends TestCase
         self::$certificationReport = new CertificationReport($checkOrder, $finished);
         self::assertEquals(0, self::$certificationReport->getId());
         self::assertEquals($checkOrder, self::$certificationReport->getCheckOrder());
-        self::assertEquals(true, self::$certificationReport->getFinished());
+        self::assertEquals($finished, self::$certificationReport->getFinished());
     }
 
     /**
@@ -110,7 +111,7 @@ class CertificationReportTest extends TestCase
         $remodeling->setAddress(self::$faker->streetAddress);
         $remodeling->setCity(self::$faker->city);
         $remodeling->setBuiltArea(self::$faker->numberBetween(30,300));
-        $remodeling->setStartDate(new \DateTime());
+        $remodeling->setStartDate(new DateTime());
         $remodeling->setConstructionTime(self::$faker->numberBetween(1,20));
 
         self::$certificationReport->setRemodeling($remodeling);
