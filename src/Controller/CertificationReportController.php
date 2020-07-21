@@ -40,7 +40,7 @@ class CertificationReportController extends AbstractController
 
         $this->addFlash(
             'success',
-            '¡Certificado generado y enviado!'
+            '¡Certificado generado!'
         );
 
         return new PdfResponse(
