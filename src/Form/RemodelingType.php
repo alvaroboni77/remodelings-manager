@@ -40,17 +40,17 @@ class RemodelingType extends AbstractType
             ->add('builder', EntityType::class, [
                 'class' => Builder::class,
                 'choice_label' => 'name',
-                'placeholder' => 'Selecciona un constructor'
+                'placeholder' => 'Selecciona un constructor o añade uno nuevo'
             ])
             ->add('architect', EntityType::class, [
                 'class' => Architect::class,
                 'choice_label' => 'name',
-                'placeholder' => 'Selecciona un arquitecto'
+                'placeholder' => 'Selecciona un arquitecto o añade uno nuevo'
             ])
             ->add('technicalArchitect', EntityType::class, [
                 'class' => TechnicalArchitect::class,
                 'choice_label' => 'name',
-                'placeholder' => 'Selecciona un arquitecto técnico'
+                'placeholder' => 'Selecciona un arquitecto técnico o añade uno nuevo'
             ])
         ;
     }

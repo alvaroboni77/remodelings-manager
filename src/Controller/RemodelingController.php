@@ -112,13 +112,13 @@ class RemodelingController extends AbstractController
 
             $this->addFlash(
                 'info',
-                '¡Proyecto modificado!'
+                '¡Reforma modificada!'
             );
 
             return $this->redirectToRoute('remodeling_list');
         }
 
-        return $this->render('remodeling/show.html.twig', [
+        return $this->render('remodeling/edit.html.twig', [
             'remodeling' => $remodeling,
             'form' => $form->createView(),
             'builderForm' => $builderForm->createView(),
@@ -141,7 +141,7 @@ class RemodelingController extends AbstractController
 
         if(!$remodeling) {
             throw $this->createNotFoundException(
-                'No builder found for id '.$id
+                'No remodeling found for id '.$id
             );
         }
 
@@ -150,7 +150,7 @@ class RemodelingController extends AbstractController
 
         $this->addFlash(
             'danger',
-            '¡Proyecto eliminado!'
+            '¡Reforma eliminada!'
         );
 
         return new Response('Remodeling deleted', 200);
